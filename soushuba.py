@@ -13,6 +13,9 @@ from urllib.parse import urlparse
 import xml.etree.ElementTree as ET
 import time
 import logging
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

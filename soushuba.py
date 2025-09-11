@@ -39,13 +39,13 @@ def get_refresh_url(url: str):
             content = meta_tags[0].get('content', '')
             if 'url=' in content:
                 redirect_url = content.split('url=')[1].strip()
-                print(f"Redirecting to: {redirect_url}")
+                logger.info(f"Redirecting to: {redirect_url}")
                 return redirect_url
         else:
-            print("No meta refresh tag found.")
+            logger.error("No meta refresh tag found.")
             return None
     except Exception as e:
-        print(f'An unexpected error occurred: {e}')
+        logger.exception(f'An unexpected error occurred: {e}')
         return None
 
 def get_url(url: str):

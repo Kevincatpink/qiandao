@@ -15,6 +15,11 @@ import time
 import logging
 import urllib3
 
+# 从环境变量获取配置信息，确保使用 Secrets 中的值
+SOUSHUBA_HOSTNAME = os.environ.get('SOUSHUBA_HOSTNAME', 'www.soushu2035.com')
+SOUSHUBA_USERNAME = os.environ['SOUSHUBA_USERNAME']  # 必须配置的用户名
+SOUSHUBA_PASSWORD = os.environ['SOUSHUBA_PASSWORD']  # 必须配置的密码
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
@@ -154,14 +159,19 @@ class SouShuBaClient:
 
 if __name__ == '__main__':
     try:
-        redirect_url = get_refresh_url('http://' + os.environ.get('SOUSHUBA_HOSTNAME', 'www.soushu2035.com'))
+        # 统一使用提前定义的环境变量
+        redirect_url = get_refresh_url(f'http://{SOUSHUBA_HOSTNAME}')
         time.sleep(2)
         redirect_url2 = get_refresh_url(redirect_url)
         url = get_url(redirect_url2)
         logger.info(f'{url}')
-        client = SouShuBaClient(urlparse(url).hostname,
-                                os.environ.get('SOUSHUBA_USERNAME', "USERNAME"),
-                                os.environ.get('SOUSHUBA_PASSWORD', "PASSWORD"))
+        
+        # 直接使用已获取的Secrets值，移除不合适的默认值
+        client = SouShuBaClient(
+            urlparse(url).hostname,
+            SOUSHUBA_USERNAME,
+            SOUSHUBA_PASSWORD
+        )
         client.login()
         client.space()
         credit = client.credit()

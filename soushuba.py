@@ -16,7 +16,7 @@ import logging
 import urllib3
 
 # 从环境变量获取配置信息，确保使用 Secrets 中的值
-SOUSHUBA_HOSTNAME = os.environ['SOUSHUBA_HOSTNAME']  
+SOUSHUBA_HOSTNAME = os.environ['SOUSHUBA_HOSTNAME']
 SOUSHUBA_USERNAME = os.environ['SOUSHUBA_USERNAME']  # 必须配置的用户名
 SOUSHUBA_PASSWORD = os.environ['SOUSHUBA_PASSWORD']  # 必须配置的密码
 
@@ -141,7 +141,7 @@ class SouShuBaClient:
         headers["origin"] = f'https://{self.hostname}'
         headers["referer"] = f'https://{self.hostname}/home.php'
 
-for x in range(5):
+        for x in range(5):
             payload = {
                 "message": "MYGO!!!!!".encode("GBK"),
                 "addsubmit": "true",
@@ -155,7 +155,6 @@ for x in range(5):
                 time.sleep(120)
             else:
                 logger.warning(f'{self.username} post {x + 1}nd failed!')
-
 
 
 if __name__ == '__main__':

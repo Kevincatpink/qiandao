@@ -141,20 +141,25 @@ class SouShuBaClient:
         headers["origin"] = f'https://{self.hostname}'
         headers["referer"] = f'https://{self.hostname}/home.php'
 
-        for x in range(5):
-            payload = {
-                "message": "开心赚银币 {0} 次".format(x + 1).encode("GBK"),
-                "addsubmit": "true",
-                "spacenote": "true",
-                "referer": "home.php",
-                "formhash": formhash
-            }
-            resp = self.session.post(space_url, proxies=self.proxies, data=payload, headers=headers, verify=False)
-            if re.search("操作成功", resp.text):
-                logger.info(f'{self.username} post {x + 1}nd successfully!')
-                time.sleep(120)
-            else:
-                logger.warning(f'{self.username} post {x + 1}nd failed!')
+    for x in range(5):
+        # 计算当前循环对应的感叹号数量（第1次1个，第2次2个，...，第5次5个）
+        exclamation_count = x + 1
+        # 生成消息文本，包含对应的感叹号数量
+        message_text = f"MYGO{'!' * exclamation_count}"
+        # 保持GBK编码转换
+        payload = {
+            "message": message_text.encode("GBK"),
+            "addsubmit": "true",
+            "spacenote": "true",
+            "referer": "home.php",
+            "formhash": formhash
+        }
+        resp = self.session.post(space_url, proxies=self.proxies, data=payload, headers=headers, verify=False)
+        if re.search("操作成功", resp.text):
+            logger.info(f'{self.username} post {x + 1}nd successfully!')
+            time.sleep(120)
+        else:
+            logger.warning(f'{self.username} post {x + 1}nd failed!')
 
 
 if __name__ == '__main__':
